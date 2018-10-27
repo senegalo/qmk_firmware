@@ -14,16 +14,36 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
 };
 
+//Tap Dance Declarations
+enum {
+  MIB_SLEEP = 0
+};
+
+void mib_sleep(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 4) {
+    SEND_STRING(SS_LCTRL(SS_LGUI("q")));
+    reset_tap_dance (state);
+  } else {
+    register_code(KC_ESC);
+  }
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+ [MIB_SLEEP] = ACTION_TAP_DANCE_FN (mib_sleep)
+};
+
+
+
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT(
-    KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,     KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_DEL,  KC_BSPC, \
-    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, \
-    KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,     KC_L,    KC_SCLN, KC_QUOT, KC_ENT, \
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, KC_RSFT, KC_UP, \
-    KC_LCTL, KC_LALT, KC_LGUI, KC_SPC,  KC_SPC,           KC_SPC,  KC_SPC,  MO(_FN1), KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT
+    TD(MIB_SLEEP), KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,     KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_DEL,  KC_BSPC, \
+    KC_TAB       ,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, \
+    KC_CAPS      , KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,     KC_L,    KC_SCLN, KC_QUOT, KC_ENT, \
+    KC_LSFT      , KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, KC_RSFT, KC_UP, \
+    KC_LCTL      , KC_LALT, KC_LGUI, KC_SPC,  KC_SPC,           KC_SPC,  KC_SPC,  MO(_FN1), KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT
   ),
 
   [_FN1] = LAYOUT(
